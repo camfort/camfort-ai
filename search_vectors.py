@@ -29,15 +29,15 @@ def main():
 
     search_functions(df, searchtxt, n=args.num_results)
 
-def search_functions(df, code_query, n=3, pprint=True, n_lines=7):
+def search_functions(df, code_query, n=3, pprint=True):
     embedding = get_embedding(code_query, engine='code-search-babbage-text-001')
     df['similarities'] = df.emb.apply(lambda x: cosine_similarity(x, embedding))
 
     res = df.sort_values('similarities', ascending=False).head(n)
     if pprint:
         for r in res.iterrows():
-            print(f'{r[1].path}:{r[1].firstLine}: function or subroutine {r[1].fname}: score={str(round(r[1].similarities, 3))}')
-            print('-'*70)
+            print(f'{str(round(r[1].similarities*100, 1))}%: {r[1].fname}: {r[1].path} line {r[1].firstLine}')
+
     return res
 
 
