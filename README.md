@@ -4,10 +4,21 @@
 
 - `pip install -r requirements.txt`
 
-## Docker
+## Docker alternative
 
 - `./build.sh` generates image `openai:python3.10` locally from `Dockerfile.openai-python`
 - `./run.sh [...]` runs command `[...]` within the Docker container.
+
+## Getting an OpenAI API key
+
+Sign up at <https://openai.com/api/>. You should automatically receive
+US$18 in credit valid for 3 months (as of this writing), which should
+be sufficient for testing. You can find your API key here:
+<https://beta.openai.com/account/api-keys>.
+
+The key is a long string beginning with `sk-`. Put the OpenAI API key
+into the env var `OPENAPI_API_KEY` or provide it using the `--api-key`
+option to scripts.
 
 ## Function / subroutine search
 
@@ -23,8 +34,6 @@ in the file looks like this:
 
 `{"name": "function_name", "path": "path/to/fortran/file.f90", "firstLine": 10, "lastLine": 25}`
 
-Put your OpenAPI key into the env var `OPENAPI_API_KEY` or provide it using the `--api-key` option.
-
 #### Example runs
 
 - `fortran-src --dump-funs-and-subs src/ | ./run.sh python get_vectors.py --api-key "sk-..."`
@@ -35,8 +44,6 @@ Put your OpenAPI key into the env var `OPENAPI_API_KEY` or provide it using the 
 Script `search_vectors.py` can be used to query the (sqlite3) database
 using a general free-text search query to find the functions or
 subroutines that most closely match the description.
-
-Put your OpenAPI key into the env var `OPENAPI_API_KEY` or provide it using the `--api-key` option.
 
 #### Example runs
 
