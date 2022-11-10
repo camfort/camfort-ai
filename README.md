@@ -29,3 +29,16 @@ Put your OpenAPI key into the env var `OPENAPI_API_KEY` or provide it using the 
 
 - `fortran-src --dump-funs-and-subs src/ | ./run.sh python get_vectors.py --api-key "sk-..."`
 - `fortran-src --dump-funs-and-subs file.f90 | ./run.sh python get_vectors.py --database mydatabase.db --api-key "sk-..."`
+
+### Searching the database
+
+Script `search_vectors.py` can be used to query the (sqlite3) database
+using a general free-text search query to find the functions or
+subroutines that most closely match the description.
+
+Put your OpenAPI key into the env var `OPENAPI_API_KEY` or provide it using the `--api-key` option.
+
+#### Example runs
+
+- `./run.sh python search_vectors.py --api-key "sk-..." --database mydatabase.db calculate wet-bulb temperatures`
+- `./run.sh python search_vectors.py -n 10 precipitation in clouds`
