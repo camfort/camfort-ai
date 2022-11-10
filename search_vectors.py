@@ -13,6 +13,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--database', '-D', type=str, default=defaultdbfile, help='SQLite3 database filename for storing vectors')
     parser.add_argument('--api-key', type=str, default=None, help='OpenAI API key (or use env var OPENAI_API_KEY)')
+    parser.add_argument('--num-results', '-n', type=int, default=3, help='Number of results to output')
     parser.add_argument('input', nargs=argparse.REMAINDER, type=str, help='Search terms')
 
     args = parser.parse_args()
@@ -26,7 +27,7 @@ def main():
     query = "SELECT path, name AS fname, firstLine, lastLine, vectorid, elem AS emb FROM embeddings JOIN vectors ON embeddings.vectorid = vectors.id ORDER BY vectorid, ord"
     df = pd.read_sql_query(query, con).groupby('vectorid').agg({'emb': list, 'path': 'first', 'fname': 'first', 'firstLine': 'first', 'lastLine': 'first'}).reset_index()
 
-    search_functions(df, searchtxt)
+    search_functions(df, searchtxt, n=args.num_results)
 
 def search_functions(df, code_query, n=3, pprint=True, n_lines=7):
     embedding = get_embedding(code_query, engine='code-search-babbage-text-001')
