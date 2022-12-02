@@ -1,0 +1,512 @@
+What is a unit-of-measure?
+
+A unit-of-measure is a standard quantity used to express the amount of something.
+
+What are examples of units-of-measure?
+
+Some examples of units-of-measure include: length (inches, feet, yards, miles, etc.), area (acres, square feet, square miles, etc.), volume (cups, gallons, quarts, etc.), weight (pounds, ounces, tons, etc.), time (seconds, minutes, hours, days, etc.), and speed (miles per hour, etc.).
+
+Units-of-measure can be combined using multiplication (using * or juxtaposition), division (using /) or exponentiation (using **). This forms compound units-of-measure. For example,
+
+miles / hour
+meter**2 / second**2
+kilogram meter / second
+foot * pound
+
+Fortran variables can be assigned units-of-measure by adding a comment in the following format before the variable declaration:
+
+! unit <unit-of-measure> :: <variable-name>
+
+Here are some examples:
+
+###
+! unit meter :: x
+real x
+! unit second :: t
+real :: t
+###
+! unit meter / second :: velocity
+real :: velocity
+###
+! unit kilogram * meter**2 / second**2 :: energy
+real :: energy
+! unit meter / second :: velocity
+real :: velocity
+real :: mass
+energy = 0.5 * mass * velocity * velocity
+###
+
+What are the units-of-measure for energy in the last example?
+
+The units-of-measure for energy in the last example are kilogram meter**2 / second**2.
+
+Given a Fortran program with variable declarations, some of them will have units-of-measure annotations, and some of them will not. Each variable may have only a single units-of-measure declaration. We want to fill in the missing units-of-measure annotations. Examples:
+
+###
+Input: """
+! unit feet :: a
+real a
+! unit pound :: b
+real :: b
+real :: c
+c = a/b
+"""
+Output: """
+! unit feet :: a
+real a
+! unit pound :: b
+real :: b
+! unit feet / pound :: c
+real :: c
+c = a/b
+"""
+###
+Input: """
+! unit kg :: w
+real :: w
+real :: x
+real :: t
+! unit kg m**2 / s**2 :: e
+real :: e
+e = 0.5 * w * x**2 / t**2
+"""
+Output: """
+! unit kg :: w
+real :: w
+! unit m :: x
+real :: x
+! unit s :: t
+real :: t
+! unit kg m**2 / s**2 :: e
+real :: e
+e = 0.5 * w * x**2 / t**2
+"""
+###
+Input: """
+! unit cm :: x
+real :: x
+! unit inch / cm :: conv
+real :: conv = 2.54
+real :: y
+y = x * conv
+"""
+Output: """
+! unit cm :: x
+real :: x
+! unit inch / cm :: conv
+real :: conv = 2.54
+! unit inch :: y
+real :: y
+y = x * conv
+"""
+###
+Input: """
+! unit J :: e1
+real :: e1
+! unit J/cal :: c
+real :: c = 4.19
+real :: e2
+e2 = c * e1
+"""
+Output:
+
+
+! unit J :: e1
+real :: e1
+! unit J/cal :: c
+real :: c = 4.19
+! unit cal :: e2
+real :: e2
+e2 = c * e1
+
+Input: """
+program foo
+! unit meter / second**2 :: a
+real :: a
+! unit second :: t
+real :: t
+real :: x
+x = 0.5 * a * t**2
+end program foo
+"""
+Output:
+
+program foo
+! unit meter / second**2 :: a
+real :: a
+! unit second :: t
+real :: t
+! unit meter :: x
+real :: x
+x = 0.5 * a * t**2
+end program foo
+
+Input: """
+function f(x)
+! unit meter :: x
+real :: x
+real :: f
+f = x**2
+end function f
+"""
+Output:
+
+function f(x)
+! unit meter :: x
+real :: x
+! unit meter**2 :: f
+real :: f
+f = x**2
+end function f
+
+It is possible to put multiple variables on the same declaration line. In that case, all of the relevant units-of-measure annotation lines all appear in consecutive order above the declaration. Each variable may only have a single units-of-measure annotation. Each units-of-measure annotation must be for a different variable. For example:
+
+###
+Input: """
+function f(x)
+! unit meter :: x
+real :: x,f
+f = x**2
+end function f
+"""
+Output: """
+function f(x)
+! unit meter :: x
+! unit meter**2 :: f
+real :: x,f
+f = x**2
+end function f
+"""
+###
+Input: """
+program energy
+! unit kg :: w
+! unit kg m**2/s**2 :: e
+real :: w, t, x, e
+e = w * 0.5 * x**2 / t**2
+"""
+Output: """
+program energy
+! unit kg :: w
+! unit s :: t
+! unit m :: x
+! unit kg m**2/s**2 :: e
+real :: w, t, x, e
+e = w * 0.5 * x**2 / t**2
+"""
+###
+Input: """
+function g(y)
+! unit q :: y
+real :: g,q
+g = q*q*q
+end function g
+"""
+Output: """
+function g(y)
+! unit q :: y
+! unit q**3 :: g
+real :: g,q
+g = q*q*q
+end function g
+"""
+
+It is possible to put the declaration for a function return type in front of the 'function' keyword, but not the 'subroutine' keyword. Therefore, when the return type declaration is given for functions, the annotation for the units-of-measure of the function return variable is inserted on the line above the function. We will not annotate subroutines in this way because subroutines do not return values. For examples of functions:
+
+###
+Input: """
+real function p(x,y)
+! unit a :: x
+! unit b :: y
+p = x * y
+end function p
+"""
+Output: """
+! unit a b :: p
+real function p(x,y)
+! unit a :: x
+! unit b :: y
+real :: x, y
+p = x * y
+end function p
+"""
+###
+Input: """
+real function f(x)
+! unit m :: x
+real :: x
+f = x**2
+end function f
+"""
+Output: """
+! unit m**2 :: f
+real function f(x)
+! unit m :: x
+real :: x
+f = x**2
+end function f
+"""
+
+Each variable may only have one units-of-measure annotation.
+
+###
+Input: """
+! unit m :: x
+real :: x, y
+x = y
+"""
+Output: """
+! unit m :: x
+! unit m :: y
+real :: x, y
+x = y
+"""
+
+We can define aliases for units-of-measure in terms of one another using the following syntax:
+
+! unit :: <alias> = <other units-of-measure>
+
+This means that the alias can be directly substituted using the other units-of-measure on the right-hand-side of the equal sign.
+
+For example:
+
+###
+! unit :: energy = kg * m**2 / s**2
+###
+! unit :: velocity = m / s
+###
+! unit :: foo = a b / c**2
+
+Therefore insert the missing annotations for the following program.
+
+###
+Input: """
+! unit :: energy = kg * m**2 / s**2
+program foo
+! unit energy :: e
+! unit kg :: w
+real :: e, x, t, w
+e = 0.5 * w * x**2 / t**2
+end program foo
+"""
+Output: """
+! unit :: energy = kg * m**2 / s**2
+program foo
+! unit energy :: e
+! unit kg :: w
+! unit m :: x
+! unit s :: t
+real :: e, x, t, w
+e = 0.5 * w * x**2 / t**2
+end program foo
+"""
+
+Some variables do not have units-of-measure. They lack units-of-measure. They are unitless. The label '1' can be used for unitless variables. It follows the rules for multiplication and division. For example:
+
+###
+Input: """
+! unit 1 :: a
+real a
+"""
+Output: """
+! unit 1 :: a
+real a
+"""
+###
+Input: """
+! unit 1 :: somevar
+real :: somevar
+"""
+Output: """
+! unit 1 :: somevar
+real :: somevar
+"""
+###
+Input: """
+! unit 1 * m :: x
+real x
+"""
+Output: """
+! unit m :: x
+real x
+"""
+###
+Input: """
+! unit m * 1 :: x
+real x
+"""
+Output: """
+! unit m :: x
+real x
+"""
+###
+Input: """
+! unit s / 1 :: x
+real x
+"""
+Output: """
+! unit s :: x
+real x
+"""
+###
+Input: """
+! unit 1 / s :: f
+real f
+"""
+Output: """
+! unit 1 / s :: f
+real f
+"""
+###
+Input: """
+! unit 1 :: pi
+! unit m :: r
+real :: pi, r, a
+a = pi * r**2
+"""
+Output: """
+"""
+###
+Input: """
+! unit 1 :: pi
+! unit m :: r
+real :: pi, r, a
+a = pi * r**2
+"""
+Output: """
+! unit m**2 :: a
+! unit 1 :: pi
+! unit m :: r
+real :: pi, r, a
+a = pi * r**2
+"""
+
+It is possible to annotate multiple variables with the same units-of-measure on the same line. Examples:
+
+###
+Input: """
+! unit m :: x, y, z
+real :: x, y, z
+"""
+Output: """
+! unit m :: x, y, z
+real :: x, y, z
+"""
+###
+Input: """
+! unit a :: t1
+! unit b :: aa
+real :: t1, qa, aa, bb
+t1 = qa
+bb = aa
+"""
+Output: """
+! unit a :: t1, qa
+! unit b :: aa, bb
+real :: t1, qa, aa, bb
+t1 = qa
+bb = aa
+"""
+###
+Input: """
+! unit q :: x1
+! unit p :: y2
+real :: x1, x2, y1, y2
+x1 = x2
+y2 = y1
+"""
+Output: """
+"""
+###
+Input: """
+! unit q :: x1
+! unit p :: y2
+real :: x1, x2, y1, y2
+x1 = x2
+y2 = y1
+"""
+Output: """
+! unit q :: x1, x2
+! unit p :: y1, y2
+real :: x1, x2, y1, y2
+x1 = x2
+y2 = y1
+
+Units-of-measure annotations must be consistent with the program. When <x> = <y> then <x> and <y> must have the same units-of-measure. For addition and subtraction the terms must have the same units-of-measure. That means for <x> + <y> both <x> and <y> must have the same units-of-measure. And for <x> - <y> both <x> and <y> must have the same units-of-measure. If <x> has unit <unit1> and <y> has unit <unit2> then if an inconsistency is found then a comment of the form '! ERROR: <x> and <y> are inconsistent because <unit1> != <unit2>' should be inserted next to the location in the code where the inconsistency is found. Examples:
+
+###
+Input: """
+! unit m :: x
+! unit s :: y
+real x,y
+x = y
+"""
+Output: """
+! unit m :: x
+! unit s :: y
+real x,y
+! ERROR: x and y are inconsistent because m != s
+x = y
+"""
+###
+Input: """
+! unit kg :: weight
+! unit s :: time
+real :: weight, time, energy
+energy = weight + time
+"""
+Output: """
+! unit kg :: weight
+! unit s :: time
+real :: weight, time, energy
+! ERROR: weight and time are inconsistent because kg != s
+energy = weight + time
+"""
+###
+Input: """
+! unit m :: f
+real function f(x)
+! unit s :: x
+real x
+f = x
+end function f
+"""
+Output: """
+! unit m :: f
+real function f(x)
+! unit s :: x
+real :: x
+! ERROR: f and x are inconsistent because m != s
+f = x
+end function f
+"""
+###
+Input: """
+program foo
+! unit a :: x
+! unit b :: y
+real :: x, y, z
+z = x + y
+end program foo
+"""
+Output: """
+"""
+###
+Input: """
+program foo
+! unit a :: x
+! unit b :: y
+real :: x, y, z
+z = x + y
+end program foo
+"""
+Output: """
+program foo
+! unit a :: x
+! unit b :: y
+real :: x, y, z
+! ERROR: x and y are inconsistent because a != b
+z = x + y
+end program foo
+"""
+
