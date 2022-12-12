@@ -1,121 +1,121 @@
 Input: """
-! unit meter :: x
+!= unit meter :: x
 real x
-! unit second :: t
+!= unit second :: t
 real :: t
 """
 Output: """
-! unit meter :: x
+!= unit meter :: x
 real x
-! unit second :: t
+!= unit second :: t
 real :: t
 """
 ###
 Input: """
-! unit meter / second :: velocity
+!= unit meter / second :: velocity
 real :: velocity
 """
 Output: """
-! unit meter / second :: velocity
+!= unit meter / second :: velocity
 real :: velocity
 """
 ###
 Input: """
-! unit kilogram * meter**2 / second**2 :: energy
+!= unit kilogram * meter**2 / second**2 :: energy
 real :: energy
-! unit meter / second :: velocity
+!= unit meter / second :: velocity
 real :: velocity
 real :: mass
 energy = 0.5 * mass * velocity * velocity
 """
 Output: """
-! unit kilogram * meter**2 / second**2 :: energy
+!= unit kilogram * meter**2 / second**2 :: energy
 real :: energy
-! unit meter / second :: velocity
+!= unit meter / second :: velocity
 real :: velocity
 real :: mass
 energy = 0.5 * mass * velocity * velocity
 """
 ###
 Input: """
-! unit feet :: a
+!= unit feet :: a
 real a
-! unit pound :: b
+!= unit pound :: b
 real :: b
 real :: c
 c = a/b
 """
 Output: """
-! unit feet :: a
+!= unit feet :: a
 real a
-! unit pound :: b
+!= unit pound :: b
 real :: b
-! unit feet / pound :: c
+!= unit feet / pound :: c
 real :: c
 c = a/b
 """
 ###
 Input: """
-! unit kg :: w
+!= unit kg :: w
 real :: w
 real :: x
 real :: t
-! unit kg m**2 / s**2 :: e
+!= unit kg m**2 / s**2 :: e
 real :: e
 e = 0.5 * w * x**2 / t**2
 """
 Output: """
-! unit kg :: w
+!= unit kg :: w
 real :: w
-! unit m :: x
+!= unit m :: x
 real :: x
-! unit s :: t
+!= unit s :: t
 real :: t
-! unit kg m**2 / s**2 :: e
+!= unit kg m**2 / s**2 :: e
 real :: e
 e = 0.5 * w * x**2 / t**2
 """
 ###
 Input: """
-! unit cm :: x
+!= unit cm :: x
 real :: x
-! unit inch / cm :: conv
+!= unit inch / cm :: conv
 real :: conv = 2.54
 real :: y
 y = x * conv
 """
 Output: """
-! unit cm :: x
+!= unit cm :: x
 real :: x
-! unit inch / cm :: conv
+!= unit inch / cm :: conv
 real :: conv = 2.54
-! unit inch :: y
+!= unit inch :: y
 real :: y
 y = x * conv
 """
 ###
 Input: """
-! unit J :: e1
+!= unit J :: e1
 real :: e1
-! unit J/cal :: c
+!= unit J/cal :: c
 real :: c = 4.19
 real :: e2
 e2 = c * e1
 """
 Output: """
-! unit J :: e1
+!= unit J :: e1
 real :: e1
-! unit J/cal :: c
+!= unit J/cal :: c
 real :: c = 4.19
-! unit cal :: e2
+!= unit cal :: e2
 real :: e2
 e2 = c * e1
 ###
 Input: """
 program foo
-! unit meter / second**2 :: a
+!= unit meter / second**2 :: a
 real :: a
-! unit second :: t
+!= unit second :: t
 real :: t
 real :: x
 x = 0.5 * a * t**2
@@ -123,11 +123,11 @@ end program foo
 """
 Output: """
 program foo
-! unit meter / second**2 :: a
+!= unit meter / second**2 :: a
 real :: a
-! unit second :: t
+!= unit second :: t
 real :: t
-! unit meter :: x
+!= unit meter :: x
 real :: x
 x = 0.5 * a * t**2
 end program foo
@@ -135,7 +135,7 @@ end program foo
 ###
 Input: """
 function f(x)
-! unit meter :: x
+!= unit meter :: x
 real :: x
 real :: f
 f = x**2
@@ -143,9 +143,9 @@ end function f
 """
 Output: """
 function f(x)
-! unit meter :: x
+!= unit meter :: x
 real :: x
-! unit meter**2 :: f
+!= unit meter**2 :: f
 real :: f
 f = x**2
 end function f
@@ -153,15 +153,15 @@ end function f
 ###
 Input: """
 function f(x)
-! unit meter :: x
+!= unit meter :: x
 real :: x,f
 f = x**2
 end function f
 """
 Output: """
 function f(x)
-! unit meter :: x
-! unit meter**2 :: f
+!= unit meter :: x
+!= unit meter**2 :: f
 real :: x,f
 f = x**2
 end function f
@@ -169,32 +169,32 @@ end function f
 ###
 Input: """
 program energy
-! unit kg :: w
-! unit kg m**2/s**2 :: e
+!= unit kg :: w
+!= unit kg m**2/s**2 :: e
 real :: w, t, x, e
 e = w * 0.5 * x**2 / t**2
 """
 Output: """
 program energy
-! unit kg :: w
-! unit s :: t
-! unit m :: x
-! unit kg m**2/s**2 :: e
+!= unit kg :: w
+!= unit s :: t
+!= unit m :: x
+!= unit kg m**2/s**2 :: e
 real :: w, t, x, e
 e = w * 0.5 * x**2 / t**2
 """
 ###
 Input: """
 function g(y)
-! unit q :: y
+!= unit q :: y
 real :: g,q
 g = q*q*q
 end function g
 """
 Output: """
 function g(y)
-! unit q :: y
-! unit q**3 :: g
+!= unit q :: y
+!= unit q**3 :: g
 real :: g,q
 g = q*q*q
 end function g
@@ -202,16 +202,16 @@ end function g
 ###
 Input: """
 real function p(x,y)
-! unit a :: x
-! unit b :: y
+!= unit a :: x
+!= unit b :: y
 p = x * y
 end function p
 """
 Output: """
-! unit a b :: p
+!= unit a b :: p
 real function p(x,y)
-! unit a :: x
-! unit b :: y
+!= unit a :: x
+!= unit b :: y
 real :: x, y
 p = x * y
 end function p
@@ -219,221 +219,221 @@ end function p
 ###
 Input: """
 real function f(x)
-! unit m :: x
+!= unit m :: x
 real :: x
 f = x**2
 end function f
 """
 Output: """
-! unit m**2 :: f
+!= unit m**2 :: f
 real function f(x)
-! unit m :: x
+!= unit m :: x
 real :: x
 f = x**2
 end function f
 """
 ###
 Input: """
-! unit m :: x
+!= unit m :: x
 real :: x, y
 x = y
 """
 Output: """
-! unit m :: x
-! unit m :: y
+!= unit m :: x
+!= unit m :: y
 real :: x, y
 x = y
 """
 ###
 Input: """
-! unit :: energy = kg * m**2 / s**2
+!= unit :: energy = kg * m**2 / s**2
 """
 Output: """
-! unit :: energy = kg * m**2 / s**2
+!= unit :: energy = kg * m**2 / s**2
 """
 ###
 Input: """
-! unit :: velocity = m / s
+!= unit :: velocity = m / s
 """
 Output: """
-! unit :: velocity = m / s
+!= unit :: velocity = m / s
 """
 ###
 Input: """
-! unit :: foo = a b / c**2
+!= unit :: foo = a b / c**2
 """
 Output: """
-! unit :: foo = a b / c**2
+!= unit :: foo = a b / c**2
 """
 ###
 Input: """
-! unit :: energy = kg * m**2 / s**2
+!= unit :: energy = kg * m**2 / s**2
 program foo
-! unit energy :: e
-! unit kg :: w
+!= unit energy :: e
+!= unit kg :: w
 real :: e, x, t, w
 e = 0.5 * w * x**2 / t**2
 end program foo
 """
 Output: """
-! unit :: energy = kg * m**2 / s**2
+!= unit :: energy = kg * m**2 / s**2
 program foo
-! unit energy :: e
-! unit kg :: w
-! unit m :: x
-! unit s :: t
+!= unit energy :: e
+!= unit kg :: w
+!= unit m :: x
+!= unit s :: t
 real :: e, x, t, w
 e = 0.5 * w * x**2 / t**2
 end program foo
 """
 ###
 Input: """
-! unit 1 :: a
+!= unit 1 :: a
 real a
 """
 Output: """
-! unit 1 :: a
+!= unit 1 :: a
 real a
 """
 ###
 Input: """
-! unit 1 :: somevar
+!= unit 1 :: somevar
 real :: somevar
 """
 Output: """
-! unit 1 :: somevar
+!= unit 1 :: somevar
 real :: somevar
 """
 ###
 Input: """
-! unit 1 * m :: x
+!= unit 1 * m :: x
 real x
 """
 Output: """
-! unit m :: x
+!= unit m :: x
 real x
 """
 ###
 Input: """
-! unit m * 1 :: x
+!= unit m * 1 :: x
 real x
 """
 Output: """
-! unit m :: x
+!= unit m :: x
 real x
 """
 ###
 Input: """
-! unit s / 1 :: x
+!= unit s / 1 :: x
 real x
 """
 Output: """
-! unit s :: x
+!= unit s :: x
 real x
 """
 ###
 Input: """
-! unit 1 / s :: f
+!= unit 1 / s :: f
 real f
 """
 Output: """
-! unit 1 / s :: f
+!= unit 1 / s :: f
 real f
 """
 ###
 Input: """
-! unit 1 :: pi
-! unit m :: r
+!= unit 1 :: pi
+!= unit m :: r
 real :: pi, r, a
 a = pi * r**2
 """
 Output: """
-! unit m**2 :: a
-! unit 1 :: pi
-! unit m :: r
+!= unit m**2 :: a
+!= unit 1 :: pi
+!= unit m :: r
 real :: pi, r, a
 a = pi * r**2
 """
 ###
 Input: """
-! unit m :: x, y, z
+!= unit m :: x, y, z
 real :: x, y, z
 """
 Output: """
-! unit m :: x, y, z
+!= unit m :: x, y, z
 real :: x, y, z
 """
 ###
 Input: """
-! unit a :: t1
-! unit b :: aa
+!= unit a :: t1
+!= unit b :: aa
 real :: t1, qa, aa, bb
 t1 = qa
 bb = aa
 """
 Output: """
-! unit a :: t1, qa
-! unit b :: aa, bb
+!= unit a :: t1, qa
+!= unit b :: aa, bb
 real :: t1, qa, aa, bb
 t1 = qa
 bb = aa
 """
 ###
 Input: """
-! unit q :: x1
-! unit p :: y2
+!= unit q :: x1
+!= unit p :: y2
 real :: x1, x2, y1, y2
 x1 = x2
 y2 = y1
 """
 Output: """
-! unit q :: x1, x2
-! unit p :: y1, y2
+!= unit q :: x1, x2
+!= unit p :: y1, y2
 real :: x1, x2, y1, y2
 x1 = x2
 y2 = y1
 """
 ###
 Input: """
-! unit m :: x
-! unit s :: y
+!= unit m :: x
+!= unit s :: y
 real x,y
 x = y
 """
 Output: """
-! unit m :: x
-! unit s :: y
+!= unit m :: x
+!= unit s :: y
 real x,y
 ! ERROR: x and y are inconsistent because m != s
 x = y
 """
 ###
 Input: """
-! unit kg :: weight
-! unit s :: time
+!= unit kg :: weight
+!= unit s :: time
 real :: weight, time, energy
 energy = weight + time
 """
 Output: """
-! unit kg :: weight
-! unit s :: time
+!= unit kg :: weight
+!= unit s :: time
 real :: weight, time, energy
 ! ERROR: weight and time are inconsistent because kg != s
 energy = weight + time
 """
 ###
 Input: """
-! unit m :: f
+!= unit m :: f
 real function f(x)
-! unit s :: x
+!= unit s :: x
 real x
 f = x
 end function f
 """
 Output: """
-! unit m :: f
+!= unit m :: f
 real function f(x)
-! unit s :: x
+!= unit s :: x
 real :: x
 ! ERROR: f and x are inconsistent because m != s
 f = x
@@ -442,16 +442,16 @@ end function f
 ###
 Input: """
 program foo
-! unit a :: x
-! unit b :: y
+!= unit a :: x
+!= unit b :: y
 real :: x, y, z
 z = x + y
 end program foo
 """
 Output: """
 program foo
-! unit a :: x
-! unit b :: y
+!= unit a :: x
+!= unit b :: y
 real :: x, y, z
 ! ERROR: x and y are inconsistent because a != b
 z = x + y
@@ -459,32 +459,32 @@ end program foo
 """
 ###
 Input: """
-! unit m**2 :: f
+!= unit m**2 :: f
 real function f(x)
 real :: x
 f = x**2
 end function f
 """
 Output: """
-! unit m**2 :: f
+!= unit m**2 :: f
 real function f(x)
-! unit m :: x
+!= unit m :: x
 real :: x
 f = x**2
 end function f
 """
 ###
 Input: """
-! unit m :: x
-! unit s :: t
+!= unit m :: x
+!= unit s :: t
 real :: v, x, t, a, x0
 x = 0.5 * a * t**2 + v * t + x0
 """
 Output: """
-! unit m :: x, x0
-! unit s :: t
-! unit m / s :: v
-! unit m / s**2 :: a
+!= unit m :: x, x0
+!= unit s :: t
+!= unit m / s :: v
+!= unit m / s**2 :: a
 real :: v, x, t, a, x0
 x = 0.5 * a * t**2 + v * t + x0
 """
