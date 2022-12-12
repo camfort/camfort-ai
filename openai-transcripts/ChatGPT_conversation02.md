@@ -1645,3 +1645,36 @@ The annotated program would look like this:
 ### Human
 
 Ok, but you forgot to include the polymorphic units annotations for `square` and `squareP`. Please include those too as you rewrite the program.
+
+### ChatGPT
+
+Here is how the annotated program should look:
+
+    program abc
+      implicit none
+      != unit 'a**2 :: x
+      real :: x
+      != unit 'b**2 :: y
+      real :: y
+      != unit m :: a
+      real :: a
+      != unit s :: b
+      real :: b
+      x = squareP(a)
+      y = squareP(b)
+      contains
+      real function square(n)
+        != unit 'a :: n
+        real :: n
+        != unit 'a**2 :: square
+        square = n * n
+      end function square
+      real function squareP(m)
+        != unit 'a :: m
+        real :: m
+        != unit 'a**2 :: squareP
+        squareP = square(m)
+      end function squareP
+    end program abc
+    
+
